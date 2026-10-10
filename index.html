@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money Print – csvqc: CSV-Qualitätsbericht in einem Befehl</title>
+<meta name="description" content="csvqc prüft Struktur, Encoding und typische Formatfallen deiner CSV-Datei in einem Befehl und schreibt einen klaren Bericht. Lokal, ohne Konto, ohne Upload.">
+<meta name="theme-color" content="#080c12">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Money Print">
+<meta property="og:title" content="Money Print – csvqc: CSV-Qualitätsbericht in einem Befehl">
+<meta property="og:description" content="Kaputte CSV-Dateien erkennst du jetzt vor dem Import. Lokal, ohne Konto, ohne Upload.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338d4ff'/%3E%3Cstop offset='1' stop-color='%238b7bff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='43' font-size='34' font-family='Arial' font-weight='900' text-anchor='middle' fill='%2300131c'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="logo" aria-hidden="true">M</span>Money Print</a>
+    <nav aria-label="Hauptnavigation">
+      <a href="#problem">Das Problem</a>
+      <a href="#so">So geht's</a>
+      <a href="#beispiel">Beispiel</a>
+      <a href="#pruefung">Was geprüft wird</a>
+      <a href="#faq">Fragen</a>
+    </nav>
+    <a class="btn primary" href="#bekommen">Bekommen</a>
+  </div>
+</header>
+
+<main id="inhalt">
+
+<section class="hero" aria-labelledby="titel">
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow">Money Print · Werkzeug für saubere Daten: csvqc</span>
+      <h1 id="titel">Kaputte CSV-Dateien erkennst du jetzt <em>vor</em> dem Import.</h1>
+      <p class="lead">csvqc prüft Struktur, Encoding und typische Formatfallen deiner CSV-Datei in einem Befehl und schreibt dir einen klaren Bericht. Alles lokal: kein Konto, kein Upload, keine Installation.</p>
+      <div class="cta">
+        <a class="btn primary" href="#beispiel">Beispielbericht ansehen</a>
+        <a class="btn ghost" href="#so">So funktioniert's</a>
+      </div>
+      <ul class="chips" aria-label="Eckdaten">
+        <li>Nur Python-Standardbibliothek</li>
+        <li>24 Tests mitgeliefert</li>
+        <li>Keine Netzwerkzugriffe</li>
+        <li>Datei wird nur gelesen</li>
+      </ul>
+    </div>
+
+    <div class="term" role="img" aria-label="Beispiel: csvqc meldet für eine absichtlich fehlerhafte Beispieldatei 9 Fehler und 9 Warnungen">
+      <div class="top"><i></i><i></i><i></i><span>Terminal – Beispiel mit absichtlich fehlerhafter Datei</span></div>
+<pre aria-hidden="true"><span class="l l1"><span class="p">$</span> python csvqc.py beispiel_fehlerhaft.csv --pflicht email,name --schluessel kunden_id</span><span class="l l2 dim">CSV-Qualitaetsbericht: beispiel_fehlerhaft.csv</span><span class="l l3"><span class="dim">12 Zeilen · 7 Spalten · Trennzeichen ';'</span></span><span class="l l4"><span class="score"><span class="pill e">9 Fehler</span><span class="pill w">9 Warnungen</span><span class="pill n">0 Hinweise</span></span></span><span class="l l5"><span class="er">✗</span> schluessel-doppelt <span class="dim">kunden_id</span>  '1002': Zeile 4 und Zeile 3</span><span class="l l6"><span class="er">✗</span> datum-ungueltig <span class="dim">bestelldatum</span>  Zeile 7: '2024-13-45'</span><span class="l l7"><span class="wa">!</span> zahl-exponent <span class="dim">umsatz</span>  Zeile 8: '3,5E+03'<span class="caret"></span></span></pre>
+    </div>
+  </div>
+</section>
+
+<section id="problem" class="alt" aria-labelledby="h-problem">
+  <div class="wrap">
+    <h2 id="h-problem">Das kennst du</h2>
+    <p class="sub">Eine Datei kommt von einem Lieferanten, aus einem Export oder von einer Schnittstelle – und erst beim Import merkst du, dass etwas nicht stimmt.</p>
+    <div class="cards">
+      <div class="card"><div class="ico" aria-hidden="true">⚠</div><h3>Der Import bricht ab – oder läuft still falsch</h3><p>Eine Zeile mit zu vielen oder zu wenigen Feldern, ein Trennzeichen, das nicht passt: Der Import scheitert oder schiebt Werte in die falsche Spalte.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">∑</div><h3>Zahlen sind keine Zahlen</h3><p>1.234,56 hier, 1234.56 dort, 3,5E+03 aus dem Tabellen-Export, ein Euro-Zeichen im Feld – rechnen geht dann nicht.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">ä</div><h3>Umlaute und Datumsangaben zerbröseln</h3><p>Falsches Encoding macht aus einem Umlaut ein Sonderzeichen. Und 11/07/2024 kann der 11. Juli oder der 7. November sein.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="so" aria-labelledby="h-so">
+  <div class="wrap">
+    <h2 id="h-so">Drei Schritte, ein Bericht</h2>
+    <p class="sub">Ein Kommandozeilen-Werkzeug in einer einzigen Python-Datei. Du brauchst nur Python 3.11.</p>
+    <ol class="steps">
+      <li><b>Datei bereitlegen</b><span>Irgendeine CSV: Export, Lieferantenliste, Schnittstellen-Datei. Sie wird nur gelesen und nie verändert.</span></li>
+      <li><b>Einen Befehl ausführen</b><span><code>python csvqc.py DATEI.csv</code> – optional mit <code>--pflicht</code> und <code>--schluessel</code> für deine eigenen Regeln.</span></li>
+      <li><b>Bericht lesen</b><span>Als Markdown für Menschen und als JSON mit festen Befundkennungen für automatische Abläufe.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="beispiel" class="alt" aria-labelledby="h-beispiel">
+  <div class="wrap">
+    <h2 id="h-beispiel">So sieht das Ergebnis aus</h2>
+    <p class="sub">Echter Auszug aus dem mitgelieferten Beispielbericht. Die Beispieldatei ist absichtlich voller Fehler.</p>
+    <div class="demo">
+      <div class="panel">
+        <h3>Eingabe – Auszug aus beispiel_fehlerhaft.csv</h3>
+<pre><span class="n">1</span> kunden_id;name;email;land;umsatz;bestelldatum;aktiv
+<span class="n">3</span> 1002;Bernd Klein;<mark>;</mark>;DE;980,00;15.02.2024;ja
+<span class="n">4</span> <mark>1002;Bernd Klein;;DE;980,00;15.02.2024;ja</mark>
+<span class="n">7</span> 0105;Emil Braun;emil.braun@example.com;CH;2.000;<mark>2024-13-45</mark>;j
+<span class="n">8</span> 1006;<mark>;</mark>frieda.lang@example.com;DE;<mark>3,5E+03</mark>;20.05.2024;ja
+<span class="n">10</span> 1008;Heidi Kurz;heidi.kurz@example.com;DE;450,00;2024-06-30;ja;<mark>zuviel</mark>
+<span class="n">11</span> 1009;Ivo Lang;ivo.lang@example.com;DE;600,00;<mark>2024-07-15</mark></pre>
+      </div>
+      <div class="panel">
+        <h3>Bericht – Befunde (Auszug)</h3>
+        <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th>Schwere</th><th>Kennung</th><th>Spalte</th><th>Beispiele</th></tr></thead>
+          <tbody>
+            <tr><td><span class="sev e">Fehler</span></td><td><code>schluessel-doppelt</code></td><td>kunden_id</td><td>'1002': Zeile 4 und Zeile 3</td></tr>
+            <tr><td><span class="sev e">Fehler</span></td><td><code>datum-ungueltig</code></td><td>bestelldatum</td><td>Zeile 7: '2024-13-45'</td></tr>
+            <tr><td><span class="sev e">Fehler</span></td><td><code>pflichtfeld-leer</code></td><td>name</td><td>Zeile 8</td></tr>
+            <tr><td><span class="sev e">Fehler</span></td><td><code>zeile-feldzahl</code></td><td>–</td><td>Zeile 10: 8 Felder; Zeile 11: 6 Felder</td></tr>
+            <tr><td><span class="sev w">Warnung</span></td><td><code>zahl-fuehrende-null</code></td><td>kunden_id</td><td>Zeile 7: '0105'</td></tr>
+            <tr><td><span class="sev w">Warnung</span></td><td><code>zahl-exponent</code></td><td>umsatz</td><td>Zeile 8: '3,5E+03'</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+    <p class="note">Der vollständige Bericht nennt hier 9 Fehler und 9 Warnungen und enthält zusätzlich eine Übersicht je Spalte. Die Qualitätsnote ist eine gewichtete Einschätzung aus den Befunden, keine Messung.</p>
+  </div>
+</section>
+
+<section id="pruefung" aria-labelledby="h-pruefung">
+  <div class="wrap">
+    <h2 id="h-pruefung">Was csvqc prüft</h2>
+    <p class="sub">Jeder Punkt ist eine real vorhandene Funktion und im Quellcode nachlesbar. Wo etwas nur eine Einschätzung ist, steht das ausdrücklich dabei.</p>
+    <div class="cards">
+      <div class="card"><div class="ico" aria-hidden="true">⌘</div><h3>Format und Encoding</h3><p>Trennzeichen (Komma, Semikolon, Tabulator, Pipe), BOM, strikte UTF-8-Prüfung mit ausgewiesenem cp1252/latin-1-Rückfall, Zeilenende-Stil.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">▦</div><h3>Struktur</h3><p>Zeilen und Spalten, Kopfzeile, abweichende Feldzahlen, leere Zeilen und Spalten, doppelte oder namenlose Spaltennamen.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">✔</div><h3>Pflichtfelder und Schlüssel</h3><p>Du legst fest, was nicht leer sein darf und was eindeutig sein muss. csvqc nennt Zeilennummern und Beispielwerte.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">1.5</div><h3>Zahlen-Formatfallen</h3><p>Gemischte Dezimaltrenner, Tausendertrenner, Exponentialschreibweise, Währungs- und Prozentzeichen, führende Nullen.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">📅</div><h3>Datumsformate</h3><p>Mehrere Schreibweisen in einer Spalte, ungültige Kalenderdaten wie 2024-13-45 und mehrdeutige Schrägstrich-Daten.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">≠</div><h3>Datentypen je Spalte</h3><p>Erkennt gemischte Typen (Zahl, Datum, Wahrheitswert, Text) in derselben Spalte.</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">⚙</div><h3>Automatisierbar</h3><p>Feste Befundkennungen im JSON. Rückgabewerte 0, 1 (mit <code>--streng</code> bei Befunden) und 2 (Datei nicht lesbar).</p></div>
+      <div class="card"><div class="ico" aria-hidden="true">🔒</div><h3>Bleibt auf deinem Rechner</h3><p>Nur die Python-Standardbibliothek, keine Fremdpakete, keine Netzwerkzugriffe. Ein Test prüft das selbst.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="fuer-wen" class="alt" aria-labelledby="h-wen">
+  <div class="wrap">
+    <h2 id="h-wen">Für wen das gedacht ist</h2>
+    <p class="sub">Für alle, die regelmäßig CSV-Dateien aus fremden Systemen bekommen und sie nicht blind importieren wollen.</p>
+    <div class="two">
+      <div class="card"><h3>Teams und Unternehmen</h3><ul class="list"><li>Lieferanten- und Kundenlisten prüfen, bevor sie ins System gehen</li><li>Berichte als JSON in eigene Abläufe einbinden</li><li>Nichts verlässt den Rechner – wichtig bei Kundendaten</li></ul></div>
+      <div class="card"><h3>Selbstständige und Einzelne</h3><ul class="list"><li>Exporte aus Shop, Buchhaltung oder Tabellenkalkulation vorab prüfen</li><li>Ein Befehl, kein Konto, keine Einrichtung</li><li>Klarer Bericht statt Raten, warum der Import hakt</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="lieferung" aria-labelledby="h-lieferung">
+  <div class="wrap">
+    <h2 id="h-lieferung">Das bekommst du</h2>
+    <p class="sub">csvqc 0.1 als ZIP-Archiv zum Herunterladen, 11 Dateien. Kein Installer: entpacken, Python 3.11 vorausgesetzt, loslegen.</p>
+    <div class="card">
+      <ul class="files">
+        <li><code>csvqc.py</code> – das Werkzeug</li>
+        <li><code>test_csvqc.py</code> – 24 Tests</li>
+        <li>3 Beispieldateien (sauber, fehlerhaft, cp1252)</li>
+        <li>2 Beispielberichte (Markdown und JSON)</li>
+        <li><code>README.md</code> – Anleitung</li>
+        <li><code>PRUEFUNG.md</code> – Befehl und Rohausgabe der Prüfung</li>
+        <li><code>LICENSE</code> – MIT-Lizenz</li>
+        <li><code>.gitignore</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="ehrlich" class="alt" aria-labelledby="h-ehrlich">
+  <div class="wrap">
+    <div class="honest">
+      <h3 id="h-ehrlich">Ehrlich gesagt – die Grenzen</h3>
+      <ul>
+        <li>csvqc prüft die <strong>Form</strong> einer Datei, nicht den Inhalt.</li>
+        <li>Typerkennung und Qualitätsnote sind begründete Einschätzungen aus Mustererkennung, keine Messungen.</li>
+        <li>Encoding ohne BOM ist nicht sicher bestimmbar; Schrägstrich-Daten bleiben mehrdeutig.</li>
+        <li>Geprüft unter Windows 11 mit Python 3.11.9. Ob es unter Linux oder macOS läuft, ist nicht bekannt. Das Verhalten bei sehr großen Dateien wurde nicht gemessen.</li>
+        <li>Nur Kommandozeile, keine Benutzeroberfläche. Keine Zusage über künftige Versionen oder Support.</li>
+        <li>Nicht für jede Befundart gibt es einen eigenen Test.</li>
+        <li>Version 0.1, und es gibt noch keine Kundenstimmen. Du wärst einer der Ersten.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="ueber" aria-labelledby="h-ueber">
+  <div class="wrap">
+    <h2 id="h-ueber">Was wir tun</h2>
+    <p class="sub">Money Print baut kleine, lokale Werkzeuge für den Umgang mit Daten. Jedes macht genau eine Sache, bleibt auf deinem Rechner und wird ehrlich beschrieben: was es kann und was nicht. csvqc ist das erste.</p>
+    <div class="cards">
+      <div class="card"><h3>Klein und klar</h3><p>Eine Aufgabe pro Werkzeug, eine Datei, ein Befehl. Keine Abos, keine Konten, keine Cloud.</p></div>
+      <div class="card"><h3>Geprüft statt behauptet</h3><p>Die Aussagen auf dieser Seite wurden gegen den Quellcode geprüft. 24 Tests sowie Befehl und Rohausgabe der Prüfung liegen jedem Paket bei.</p></div>
+      <div class="card"><h3>Mit KI entwickelt</h3><p>Entwickelt mit KI-Unterstützung (Claude von Anthropic) und von einem zweiten, unabhängigen KI-Durchlauf gegengeprüft. Verantwortlich für das Angebot ist Teyhan Altun, siehe <a href="impressum.html">Impressum</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="alt" aria-labelledby="h-faq">
+  <div class="wrap">
+    <h2 id="h-faq">Häufige Fragen</h2>
+    <details><summary>Brauche ich ein Konto oder Internet?</summary><p>Nein. csvqc läuft lokal und stellt keine Netzwerkverbindung her. Internet brauchst du nur zum Herunterladen des Pakets.</p></details>
+    <details><summary>Was passiert mit meinen Dateien?</summary><p>Sie bleiben auf deinem Rechner. csvqc liest die Datei nur und verändert sie nie. Einen Upload gibt es nicht.</p></details>
+    <details><summary>Welche Systeme werden unterstützt?</summary><p>Geprüft wurde unter Windows 11 mit Python 3.11.9. Ob es unter Linux oder macOS läuft, ist nicht bekannt.</p></details>
+    <details><summary>Wie groß dürfen die Dateien sein?</summary><p>Das Verhalten bei sehr großen Dateien wurde nicht gemessen. Wir sagen lieber ehrlich, was wir nicht wissen, als eine Zahl zu erfinden.</p></details>
+    <details><summary>Kann ich die Ergebnisse automatisch weiterverarbeiten?</summary><p>Ja. Der JSON-Bericht enthält feste Befundkennungen, und die Rückgabewerte 0, 1 und 2 lassen sich in Skripten auswerten.</p></details>
+    <details><summary>Gibt es Updates und Support?</summary><p>Es gibt keine Zusage über künftige Versionen und keinen zugesagten Support. Fragen kannst du jederzeit per E-Mail stellen.</p></details>
+    <details><summary>Wofür steht die MIT-Lizenz?</summary><p>Du bekommst den Quellcode und darfst ihn nutzen und anpassen. Die genauen Bedingungen stehen in der mitgelieferten Datei <code>LICENSE</code>.</p></details>
+  </div>
+</section>
+
+<section id="bekommen" aria-labelledby="h-bekommen">
+  <div class="wrap">
+    <div class="final">
+      <h2 id="h-bekommen">Bereit für deine nächste CSV?</h2>
+      <p>Der Shop startet in Kürze. Wenn du Bescheid bekommen oder vorab etwas fragen möchtest, schreib mir eine E-Mail.</p>
+      <a class="btn primary" href="mailto:teyhanaltun@web.de?subject=csvqc">E-Mail schreiben</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Money Print · Teyhan Altun</span>
+    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
+  </div>
+</footer>
+</body>
+</html>
