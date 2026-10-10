@@ -211,8 +211,30 @@
   <div class="wrap">
     <div class="final">
       <h2 id="h-bekommen">Bereit für deine nächste CSV?</h2>
-      <p>Der Shop startet in Kürze. Wenn du Bescheid bekommen oder vorab etwas fragen möchtest, schreib mir eine E-Mail.</p>
-      <a class="btn primary" href="mailto:teyhanaltun@web.de?subject=csvqc">E-Mail schreiben</a>
+      <p class="price">29,99 € <small>Endpreis, einmalig</small></p>
+      <p>csvqc 0.1 als ZIP-Download mit Quellcode, 24 Tests und MIT-Lizenz. Für Privatpersonen und Unternehmen.</p>
+      <p class="note" id="steuer">Preis inklusive gesetzlicher Umsatzsteuer.</p>
+
+      <form id="kauf" class="buy" novalidate>
+        <fieldset>
+          <legend>Ich kaufe als …</legend>
+          <label class="opt"><input type="radio" name="art" value="verbraucher"> Verbraucher (Privatperson)</label>
+          <label class="opt"><input type="radio" name="art" value="unternehmer"> Unternehmer (§ 14 BGB)</label>
+        </fieldset>
+        <div id="k-verbraucher" hidden>
+          <label class="chk"><input type="checkbox" id="c1"> Ich stimme ausdrücklich zu, dass Money Print vor Ablauf der Widerrufsfrist mit der Vertragserfüllung beginnt, also mit der Bereitstellung des Downloads.</label>
+          <label class="chk"><input type="checkbox" id="c2"> Mir ist bekannt, dass mein Widerrufsrecht durch meine Zustimmung mit Beginn der Vertragserfüllung erlischt. Sobald ich den Download aufrufe, ist ein Widerruf nicht mehr möglich und der Kaufpreis wird nicht erstattet.</label>
+        </div>
+        <div id="k-unternehmer" hidden>
+          <label class="chk"><input type="checkbox" id="c3"> Ich bestätige, dass ich den Vertrag als Unternehmer (§ 14 BGB) für meine gewerbliche oder selbstständige Tätigkeit abschließe.</label>
+          <p class="note">Für Unternehmer gibt es kein gesetzliches Widerrufsrecht. Nach der Bereitstellung des Downloads sind Rückgabe und Erstattung ausgeschlossen; gesetzliche Mängelrechte bleiben unberührt.</p>
+        </div>
+        <a id="kaufen" class="btn primary" role="button" aria-disabled="true" data-href="https://ko-fi.com/s/7de1abf5a8">Jetzt kaufen</a>
+        <p class="note" id="kaufhinweis">Wähle oben aus, wie du kaufst, und bestätige die Hinweise, dann wird der Kaufknopf frei.</p>
+      </form>
+      <noscript><p class="note">Der Kaufknopf braucht JavaScript. Ohne JavaScript schreib bitte an <a href="mailto:teyhanaltun@web.de?subject=csvqc">teyhanaltun@web.de</a>.</p></noscript>
+
+      <p class="note">Der Kauf läuft über Ko-fi. Verbraucher: <a href="widerruf.html">Widerrufsbelehrung</a> · <a href="widerrufen.html">Vertrag widerrufen</a>. Fragen vorab an <a href="mailto:teyhanaltun@web.de?subject=csvqc">teyhanaltun@web.de</a>.</p>
     </div>
   </div>
 </section>
@@ -222,8 +244,32 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Money Print · Teyhan Altun</span>
-    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
+    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="widerruf.html">Widerruf</a></span>
   </div>
 </footer>
+
+<script>
+(function () {
+  // Schaltet nur den Kaufknopf frei. Es werden keine Daten gesendet oder gespeichert.
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('kauf'), knopf = $('kaufen'), hinweis = $('kaufhinweis');
+  var ziel = knopf.getAttribute('data-href') || '';
+  var bereit = ziel.indexOf('HIER') === -1;
+  function art() { var r = form.querySelector('input[name="art"]:checked'); return r ? r.value : ''; }
+  function aus() { knopf.removeAttribute('href'); knopf.setAttribute('aria-disabled', 'true'); knopf.classList.add('off'); }
+  function an() { knopf.setAttribute('href', ziel); knopf.setAttribute('aria-disabled', 'false'); knopf.classList.remove('off'); }
+  function pruefen() {
+    var a = art();
+    $('k-verbraucher').hidden = a !== 'verbraucher';
+    $('k-unternehmer').hidden = a !== 'unternehmer';
+    if (!bereit) { aus(); hinweis.textContent = 'Der Shop ist noch nicht freigeschaltet.'; return; }
+    var ok = (a === 'verbraucher' && $('c1').checked && $('c2').checked) || (a === 'unternehmer' && $('c3').checked);
+    if (ok) { an(); hinweis.textContent = 'Du wirst zu Ko-fi weitergeleitet. Dort schließt du den Kauf ab.'; } else { aus(); hinweis.textContent = 'Wähle oben aus, wie du kaufst, und bestätige die Hinweise, dann wird der Kaufknopf frei.'; }
+  }
+  form.addEventListener('change', pruefen);
+  knopf.addEventListener('click', function (e) { if (knopf.getAttribute('aria-disabled') === 'true') e.preventDefault(); });
+  aus(); pruefen();
+})();
+</script>
 </body>
 </html>

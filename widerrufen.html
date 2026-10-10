@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vertrag widerrufen – Money Print</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+<style>
+  .form { display: grid; gap: 1rem; max-width: 34rem; }
+  .form label { display: grid; gap: .3rem; font-weight: 600; color: var(--fg); }
+  .form input { font: inherit; padding: .75rem .9rem; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+  .form input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .form .hint { font-weight: 400; color: var(--muted); font-size: .92rem; }
+  .gotcha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem 1.3rem; max-width: 34rem; }
+  .box dl { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: .4rem 1rem; }
+  .box dt { color: var(--muted); } .box dd { margin: 0; word-break: break-word; }
+  .row { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1rem; }
+  .msg { margin-top: 1rem; padding: .9rem 1.1rem; border-radius: 12px; border: 1px solid var(--line); }
+  .msg.ok { border-color: var(--good); } .msg.err { border-color: var(--bad); }
+  [hidden] { display: none !important; }
+  button.btn { cursor: pointer; font: inherit; font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="logo" aria-hidden="true">M</span>Money Print</a>
+    <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="widerruf.html">Widerruf</a></nav>
+    <a class="btn ghost" href="index.html">Zur Startseite</a>
+  </div>
+</header>
+<main>
+  <div class="wrap page">
+    <h1>Vertrag widerrufen</h1>
+    <p>Hier können Verbraucher ihren Vertrag über csvqc online widerrufen. Nach dem Absenden erhältst du per E-Mail eine Eingangsbestätigung mit dem Inhalt deiner Erklärung sowie Datum und Uhrzeit des Eingangs. Die Bedingungen stehen in der <a href="widerruf.html">Widerrufsbelehrung</a>. Hast du vor dem Kauf zugestimmt, dass die Vertragserfüllung vor Ablauf der Widerrufsfrist beginnt, und den Download bereits aufgerufen, ist dein Widerrufsrecht erloschen.</p>
+
+    <noscript><p class="msg err">Diese Funktion braucht JavaScript. Ohne JavaScript widerrufst du bitte per E-Mail an <a href="mailto:teyhanaltun@web.de">teyhanaltun@web.de</a> (Muster siehe <a href="widerruf.html">Widerrufsbelehrung</a>).</p></noscript>
+
+    <p id="nicht-bereit" class="msg err" hidden>Die Online-Funktion ist gerade nicht verfügbar. Bitte widerrufe per E-Mail an <a href="mailto:teyhanaltun@web.de">teyhanaltun@web.de</a>.</p>
+
+    <form id="schritt1" class="form" novalidate>
+      <label>Dein Name
+        <input id="name" name="name" autocomplete="name" required maxlength="200">
+      </label>
+      <label>Angaben zum Vertrag
+        <input id="vertrag" name="vertrag" required maxlength="300" placeholder="z. B. Kaufdatum und Bestellnummer, Produkt csvqc 0.1">
+        <span class="hint">Damit wir den Vertrag eindeutig zuordnen können.</span>
+      </label>
+      <label>E-Mail-Adresse für die Eingangsbestätigung
+        <input id="email" name="email" type="email" autocomplete="email" required maxlength="200">
+      </label>
+      <div class="gotcha" aria-hidden="true"><label>Nicht ausfüllen<input id="gotcha" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+      <div><button class="btn primary" type="submit">Vertrag widerrufen</button></div>
+      <p id="fehler1" class="msg err" role="alert" hidden></p>
+    </form>
+
+    <section id="schritt2" hidden aria-labelledby="h-best">
+      <h2 id="h-best">Bitte prüfe deine Angaben</h2>
+      <div class="box">
+        <p>Hiermit widerrufe ich den von mir abgeschlossenen Vertrag über den Kauf des digitalen Inhalts csvqc 0.1.</p>
+        <dl>
+          <dt>Name</dt><dd id="z-name"></dd>
+          <dt>Vertrag</dt><dd id="z-vertrag"></dd>
+          <dt>E-Mail</dt><dd id="z-email"></dd>
+        </dl>
+      </div>
+      <div class="row">
+        <button id="bestaetigen" class="btn primary" type="button">Widerruf bestätigen</button>
+        <button id="zurueck" class="btn ghost" type="button">Zurück und ändern</button>
+      </div>
+      <p id="fehler2" class="msg err" role="alert" hidden></p>
+    </section>
+
+    <section id="erledigt" hidden aria-live="polite">
+      <p class="msg ok"><strong>Dein Widerruf wurde übermittelt.</strong><br>Abgeschickt am <span id="z-zeit"></span> (Uhrzeit deines Geräts). Die Eingangsbestätigung mit Datum und Uhrzeit des Eingangs bei uns schicken wir dir an <span id="z-mail2"></span>. Kommt sie nicht an, melde dich bitte unter <a href="mailto:teyhanaltun@web.de">teyhanaltun@web.de</a>.</p>
+    </section>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Money Print · Teyhan Altun</span>
+    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="widerruf.html">Widerruf</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Adresse des Formular-Dienstes (Formspree). Enthält sie "HIER", bleibt die Funktion gesperrt.
+  var ENDPOINT = 'https://formspree.io/f/xnpjvojl';
+  var $ = function (id) { return document.getElementById(id); };
+  var daten = null;
+  if (ENDPOINT.indexOf('HIER') !== -1) { $('nicht-bereit').hidden = false; $('schritt1').hidden = true; return; }
+  function zeig(el, text) { el.textContent = text; el.hidden = false; }
+  $('schritt1').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('fehler1').hidden = true;
+    var name = $('name').value.trim(), vertrag = $('vertrag').value.trim(), email = $('email').value.trim();
+    if (!name || !vertrag || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { zeig($('fehler1'), 'Bitte fülle Name, Angaben zum Vertrag und eine gültige E-Mail-Adresse aus.'); return; }
+    daten = { name: name, vertrag: vertrag, email: email };
+    $('z-name').textContent = name; $('z-vertrag').textContent = vertrag; $('z-email').textContent = email;
+    $('schritt1').hidden = true; $('schritt2').hidden = false; $('h-best').focus && $('h-best').setAttribute('tabindex', '-1'); $('h-best').focus();
+  });
+  $('zurueck').addEventListener('click', function () { $('schritt2').hidden = true; $('schritt1').hidden = false; $('fehler2').hidden = true; });
+  $('bestaetigen').addEventListener('click', function () {
+    if (!daten) return;
+    var knopf = $('bestaetigen'); knopf.disabled = true; $('fehler2').hidden = true;
+    var jetzt = new Date();
+    var body = {
+      _subject: 'WIDERRUF csvqc',
+      _gotcha: $('gotcha').value,
+      email: daten.email,
+      name: daten.name,
+      vertrag: daten.vertrag,
+      erklaerung: 'Hiermit widerrufe ich den von mir abgeschlossenen Vertrag über den Kauf des digitalen Inhalts csvqc 0.1.',
+      abgeschickt_am_geraetezeit: jetzt.toLocaleString('de-DE', { dateStyle: 'full', timeStyle: 'long' }),
+      abgeschickt_am_iso: jetzt.toISOString()
+    };
+    fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json().catch(function () { return {}; }); })
+      .then(function () {
+        $('schritt2').hidden = true; $('erledigt').hidden = false;
+        $('z-zeit').textContent = jetzt.toLocaleString('de-DE', { dateStyle: 'full', timeStyle: 'long' });
+        $('z-mail2').textContent = daten.email;
+      })
+      .catch(function () {
+        knopf.disabled = false;
+        zeig($('fehler2'), 'Das Absenden hat nicht geklappt. Bitte versuche es noch einmal oder widerrufe per E-Mail an teyhanaltun@web.de.');
+      });
+  });
+})();
+</script>
+</body>
+</html>
