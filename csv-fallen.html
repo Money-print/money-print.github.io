@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sieben CSV-Fallen, die Importe still kaputt machen – Money Print</title>
+<meta name="description" content="Falsche Feldzahl, gemischte Dezimaltrenner, führende Nullen, mehrdeutige Datumsangaben: sieben CSV-Fallen, die Importe still falsch machen, und wie du sie vor dem Import findest.">
+<meta name="theme-color" content="#080c12">
+<link rel="canonical" href="https://money-print.github.io/csv-fallen.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Money Print">
+<meta property="og:title" content="Sieben CSV-Fallen, die Importe still kaputt machen">
+<meta property="og:description" content="Sieben typische Fehler in CSV-Dateien und wie du sie vor dem Import findest.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="logo" aria-hidden="true">M</span>Money Print</a>
+    <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="widerruf.html">Widerruf</a></nav>
+    <a class="btn ghost" href="index.html">Zur Startseite</a>
+  </div>
+</header>
+<main>
+  <article class="wrap page">
+    <h1>Sieben CSV-Fallen, die Importe still kaputt machen</h1>
+    <p class="note">Ratgeber von Money Print · Stand: 11. Oktober 2026</p>
+
+    <p>Eine CSV-Datei sieht harmlos aus: Text mit Trennzeichen. Gerade deshalb schleichen sich Fehler ein, die erst auffallen, wenn Zahlen nicht stimmen oder Kunden doppelt im System stehen. Das sind sieben Fallen, auf die das Werkzeug <a href="index.html">csvqc</a> eine Datei prüft. Die Beispiele stammen aus der absichtlich fehlerhaften Beispieldatei, die dem Paket beiliegt.</p>
+
+    <h2>1. Falsche Feldzahl</h2>
+    <p>Eine Zeile hat ein Feld zu viel oder zu wenig. Bei sieben Spalten in der Kopfzeile sieht das so aus:</p>
+<pre>kunden_id;name;email;land;umsatz;bestelldatum;aktiv
+1008;Heidi Kurz;heidi.kurz@example.com;DE;450,00;2024-06-30;ja;zuviel</pre>
+    <p>Je nach Import bricht er ab oder schiebt Werte in die falsche Spalte.</p>
+
+    <h2>2. Gemischte Dezimal- und Tausendertrenner</h2>
+    <p><code>1.234,56</code> in der einen Zeile, <code>1234.56</code> in der nächsten. Programme lesen die eine Schreibweise als Zahl und die andere als Text, oder falsch. Dazu kommen Währungs- und Prozentzeichen im Feld, etwa <code>600,00 €</code>.</p>
+
+    <h2>3. Exponentialschreibweise</h2>
+    <p><code>3,5E+03</code> steht oft nach dem Export aus einer Tabellenkalkulation in der Datei. Menschen lesen 3500, ein Importer nicht unbedingt.</p>
+
+    <h2>4. Führende Nullen</h2>
+    <p>Aus <code>0105</code> wird in vielen Tabellenprogrammen <code>105</code>. Bei Kundennummern oder Postleitzahlen ist das ein Datenfehler, der nicht auffällt, weil beide Werte plausibel aussehen.</p>
+
+    <h2>5. Datumsangaben</h2>
+    <p>Drei Probleme kommen vor: gemischte Schreibweisen in einer Spalte (<code>15.02.2024</code> neben <code>2024-06-30</code>), Werte, die wie ein Datum aussehen, aber keines sind (<code>2024-13-45</code>), und mehrdeutige Schrägstrich-Daten wie <code>11/07/2024</code>. Ist das der 11. Juli oder der 7. November? Das lässt sich der Datei nicht ansehen.</p>
+
+    <h2>6. Encoding und BOM</h2>
+    <p>Aus Umlauten werden Sonderzeichen, wenn eine Datei als cp1252 gespeichert, aber als UTF-8 gelesen wird. Ein BOM am Dateianfang kann den Namen der ersten Spalte verändern. Ohne BOM lässt sich das Encoding nicht sicher bestimmen. Eine Prüfung kann nur sagen, was sie festgestellt hat und was nur eine Annahme ist.</p>
+
+    <h2>7. Doppelte Schlüssel und leere Pflichtfelder</h2>
+    <p>Zwei Zeilen mit derselben Kundennummer, eine E-Mail-Spalte, die in einzelnen Zeilen leer ist: Das findet kein Import von allein. Du musst festlegen, was eindeutig sein muss und was nie leer sein darf.</p>
+
+    <h2>So findest du sie vorher</h2>
+    <p>Von Hand in der Tabellenkalkulation geht das, ist aber mühsam und selbst fehleranfällig. csvqc macht es mit einem Befehl und schreibt den Bericht als Markdown auf die Standardausgabe. Mit <code>--json</code> und <code>--md</code> landet er in Dateien. So beginnt die echte Ausgabe für die Beispieldatei, hier gekürzt:</p>
+<pre>$ python csvqc.py beispiel_fehlerhaft.csv --pflicht email,name --schluessel kunden_id
+# CSV-Qualitaetsbericht: beispiel_fehlerhaft.csv
+
+Erzeugt mit csvqc 0.1 (nur Python-Standardbibliothek, keine Netzwerkzugriffe).
+
+**Ergebnis: 9 Fehler, 9 Warnungen, 0 Hinweise. Qualitaetsnote 0/100.**
+
+[… gekürzt …]
+| Fehler | schluessel-doppelt | kunden_id | 1 | Der Schluesselwert kommt mehrfach vor. | '1002': Zeile 4 und Zeile 3 |
+| Fehler | zeile-feldzahl | - | 2 | Es gibt Zeilen mit einer anderen Feldzahl als die Kopfzeile (7). | Zeile 10: 8 Felder; Zeile 11: 6 Felder |
+| Warnung | zahl-exponent | umsatz | 1 | Zahlen stehen in Exponentialschreibweise (typisch nach einem Tabellen-Export). | Zeile 8: '3,5E+03' |</pre>
+    <p>Jeder Befund hat eine feste Kennung, die betroffene Spalte, die Zeilennummer und einen Beispielwert. Das JSON eignet sich für automatische Abläufe. Mit <code>--streng</code> endet das Programm mit Rückgabewert 1, wenn es Fehler oder Warnungen findet. Ist die Datei nicht lesbar, ist der Rückgabewert 2.</p>
+
+    <h2>Was csvqc nicht kann</h2>
+    <p>csvqc prüft die Form einer Datei, nicht, ob die Werte fachlich stimmen. Typerkennung und Qualitätsnote sind begründete Einschätzungen, keine Messungen. Es ist Version 0.1, geprüft unter Windows 11 mit Python 3.11.9, und es gibt nur die Kommandozeile. Ob es unter Linux oder macOS läuft, ist nicht bekannt.</p>
+
+    <div class="final" style="margin-top:2.2rem;padding:2rem 1.4rem">
+      <h2 style="margin-top:0">csvqc 0.1 von Money Print</h2>
+      <p>Eine Python-Datei, nur Standardbibliothek, lokal und ohne Upload. 24 Tests und die MIT-Lizenz liegen bei. 29,99 € inklusive gesetzlicher Umsatzsteuer, als ZIP-Download.</p>
+      <p><a class="btn primary" href="index.html#bekommen">csvqc ansehen</a></p>
+      <p class="note">Anbieter ist Teyhan Altun, siehe <a href="impressum.html">Impressum</a>. Das Werkzeug und dieser Text sind mit KI-Unterstützung entstanden.</p>
+    </div>
+  </article>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Money Print · Teyhan Altun</span>
+    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="widerruf.html">Widerruf</a></span>
+  </div>
+</footer>
+</body>
+</html>

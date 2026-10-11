@@ -26,6 +26,7 @@
       <a href="#beispiel">Beispiel</a>
       <a href="#pruefung">Was geprüft wird</a>
       <a href="#faq">Fragen</a>
+      <a href="csv-fallen.html">Ratgeber</a>
     </nav>
     <a class="btn primary" href="#bekommen">Bekommen</a>
   </div>
@@ -51,9 +52,9 @@
       </ul>
     </div>
 
-    <div class="term" role="img" aria-label="Beispiel: csvqc meldet für eine absichtlich fehlerhafte Beispieldatei 9 Fehler und 9 Warnungen">
-      <div class="top"><i></i><i></i><i></i><span>Terminal – Beispiel mit absichtlich fehlerhafter Datei</span></div>
-<pre aria-hidden="true"><span class="l l1"><span class="p">$</span> python csvqc.py beispiel_fehlerhaft.csv --pflicht email,name --schluessel kunden_id</span><span class="l l2 dim">CSV-Qualitaetsbericht: beispiel_fehlerhaft.csv</span><span class="l l3"><span class="dim">12 Zeilen · 7 Spalten · Trennzeichen ';'</span></span><span class="l l4"><span class="score"><span class="pill e">9 Fehler</span><span class="pill w">9 Warnungen</span><span class="pill n">0 Hinweise</span></span></span><span class="l l5"><span class="er">✗</span> schluessel-doppelt <span class="dim">kunden_id</span>  '1002': Zeile 4 und Zeile 3</span><span class="l l6"><span class="er">✗</span> datum-ungueltig <span class="dim">bestelldatum</span>  Zeile 7: '2024-13-45'</span><span class="l l7"><span class="wa">!</span> zahl-exponent <span class="dim">umsatz</span>  Zeile 8: '3,5E+03'<span class="caret"></span></span></pre>
+    <div class="term" role="img" aria-label="Beispiel: gekürzte Ausgabe von csvqc für eine absichtlich fehlerhafte Beispieldatei, 9 Fehler und 9 Warnungen">
+      <div class="top"><i></i><i></i><i></i><span>Terminal – echte Ausgabe für die Beispieldatei, gekürzt</span></div>
+<pre aria-hidden="true"><span class="l l1"><span class="p">$</span> python csvqc.py beispiel_fehlerhaft.csv --pflicht email,name --schluessel kunden_id</span><span class="l l2 dim"># CSV-Qualitaetsbericht: beispiel_fehlerhaft.csv</span><span class="l l3 dim">Erzeugt mit csvqc 0.1 (nur Python-Standardbibliothek, keine Netzwerkzugriffe).</span><span class="l l4">**Ergebnis: <span class="er">9 Fehler</span>, <span class="wa">9 Warnungen</span>, 0 Hinweise. Qualitaetsnote 0/100.**</span><span class="l l5 dim">[… Ausgabe gekürzt …]</span><span class="l l6">| Fehler | schluessel-doppelt | kunden_id | 1 | Der Schluesselwert kommt mehrfach vor. | '1002': Zeile 4 und Zeile 3 |</span><span class="l l7">| Warnung | zahl-exponent | umsatz | 1 | Zahlen stehen in Exponentialschreibweise (typisch nach einem Tabellen-Export). | Zeile 8: '3,5E+03' |<span class="caret"></span></span></pre>
     </div>
   </div>
 </section>
@@ -61,7 +62,7 @@
 <section id="problem" class="alt" aria-labelledby="h-problem">
   <div class="wrap">
     <h2 id="h-problem">Das kennst du</h2>
-    <p class="sub">Eine Datei kommt von einem Lieferanten, aus einem Export oder von einer Schnittstelle – und erst beim Import merkst du, dass etwas nicht stimmt.</p>
+    <p class="sub">Eine Datei kommt von einem Lieferanten, aus einem Export oder von einer Schnittstelle – und erst beim Import merkst du, dass etwas nicht stimmt. <a href="csv-fallen.html">Die sieben häufigsten Fallen im Überblick.</a></p>
     <div class="cards">
       <div class="card"><div class="ico" aria-hidden="true">⚠</div><h3>Der Import bricht ab – oder läuft still falsch</h3><p>Eine Zeile mit zu vielen oder zu wenigen Feldern, ein Trennzeichen, das nicht passt: Der Import scheitert oder schiebt Werte in die falsche Spalte.</p></div>
       <div class="card"><div class="ico" aria-hidden="true">∑</div><h3>Zahlen sind keine Zahlen</h3><p>1.234,56 hier, 1234.56 dort, 3,5E+03 aus dem Tabellen-Export, ein Euro-Zeichen im Feld – rechnen geht dann nicht.</p></div>
@@ -244,7 +245,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 Money Print · Teyhan Altun</span>
-    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="widerruf.html">Widerruf</a></span>
+    <span><a href="csv-fallen.html">Ratgeber</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="widerruf.html">Widerruf</a></span>
   </div>
 </footer>
 
